@@ -73,7 +73,7 @@ register_deactivation_hook(__FILE__, 'desinstalar_modulo_venda');
 register_activation_hook(__FILE__,'instalar_modulo_venda');
 
 function modulo_venda_listar_vendas() {
-	add_management_page('modulo-vendas.php', "Vendas realizadas por transferencia", 10, 'modulo-pagseguro/modulo-vendas.php');
+	add_management_page('modulo-vendas.php', "Vendas realizadas por transferencia", 10, plugin_basename(dirname(__FILE__)).'/modulo-vendas.php');
 }
 
 function modulo_venda_pagina_opcoes() {
@@ -469,15 +469,15 @@ function modulo_venda_transacao() {
 								$apagar_venda = $wpdb->query('DELETE FROM '.$table_name_venda." where id=".$venda[$id]);
 							}
 							if($apagar_venda) {
-								wp_redirect(get_bloginfo('wpurl') . '/wp-admin/edit.php?page=modulo-pagseguro/modulo-vendas.php&action=apagar&error=0');
+								wp_redirect(get_bloginfo('wpurl') . '/wp-admin/edit.php?page='.plugin_basename(dirname(__FILE__)).'/modulo-vendas.php&action=apagar&error=0');
 							} else {
-								wp_redirect(get_bloginfo('wpurl') . '/wp-admin/edit.php?page=modulo-pagseguro/modulo-vendas.php&action=apagar&error=1');
+								wp_redirect(get_bloginfo('wpurl') . '/wp-admin/edit.php?page='.plugin_basename(dirname(__FILE__)).'/modulo-vendas.php&action=apagar&error=1');
 							}
 						}
 					}
 				}
 			} else {
-				wp_redirect(get_bloginfo('wpurl') . '/wp-admin/edit.php?page=modulo-pagseguro/modulo-vendas.php&action=apagar&error=1');
+> > 				wp_redirect(get_bloginfo('wpurl') . '/wp-admin/edit.php?page='.plugin_basename(dirname(__FILE__)).'/modulo-vendas.php&action=apagar&error=1');
 			}
 
 		}
@@ -495,9 +495,9 @@ function modulo_venda_transacao() {
 					}
 				}
 				if($modificar_status) {
-					wp_redirect(get_bloginfo('wpurl') . '/wp-admin/edit.php?page=modulo-pagseguro/modulo-vendas.php&action=status&error=0');
+					wp_redirect(get_bloginfo('wpurl') . '/wp-admin/edit.php?page='.plugin_basename(dirname(__FILE__)).'/modulo-vendas.php&action=status&error=0');
 				} else {
-					wp_redirect(get_bloginfo('wpurl') . '/wp-admin/edit.php?page=modulo-pagseguro/modulo-vendas.php&action=status&error=1&status='.$status_escolhido);
+					wp_redirect(get_bloginfo('wpurl') . '/wp-admin/edit.php?page='.plugin_basename(dirname(__FILE__)).'/modulo-vendas.php&action=status&error=1&status='.$status_escolhido);
 				}
 				
 			}
