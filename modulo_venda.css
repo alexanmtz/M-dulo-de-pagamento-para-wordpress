@@ -1,0 +1,214 @@
+/*
+ * Folha de estilos - Modulo de compra para Wordpress
+ *
+ *
+*/
+
+/*
+ * Itens da barra lateral
+ *
+ */
+
+.parts {
+	clear: both;
+}
+
+
+.aviso-frete {
+	font-size: 10px;
+	color: gray;
+	clear: both;
+}
+
+.ui-dialog p {
+	margin: 5px 0;
+}
+
+.ui-dialog a {
+	color: #CC3333;
+}
+
+#modulo-total {
+	background-color: #E4E4E4;
+	padding: 5px;
+	width: 100px;
+	float: right;
+	font-weight: bold;
+	text-align: center;
+	margin-top: -10px;
+}
+
+#modulo-comprar input {
+	margin: 10px 0;
+	font-weight: bold;
+	vertical-align: middle;
+}
+
+#modulo-comprar .modulo-venda-ajuda {
+	background: transparent url('icon_info.gif') no-repeat right center;
+	padding-right: 21px;
+}
+
+.modulo-venda-enviar {
+	float: right;
+	height:30px;
+	width:109px;
+	font-size: 16px;
+}
+
+.modulo-venda-forma-entrega h5, .modulo-venda-forma-pagamento h5 {
+	font-size: 14px;
+	margin: 8px 0 4px 0;
+}
+
+.modulo-venda-forma-entrega label, .modulo-venda-forma-pagamento label {
+	margin: 0 2px 0 10px;
+	vertical-align: middle;
+}
+
+/* Popin de transferencia bancaria */
+#modulo-venda-popin {
+	display: none;
+	margin-left: 10px;
+}
+
+#modulo-venda-popin p {
+	font-size: 0.92em;
+	color: gray;
+}
+
+#modulo-venda-popin label {
+	display: block;
+	margin-left: 0;
+}
+
+#modulo-venda-popin input {
+	margin: 0;
+}
+
+#modulo-venda-popin .fields {
+	margin: 5px 0;
+}
+
+/*
+ * Mensagens do popin
+ *
+ */
+
+#modulo-venda-popin .error, #modulo-venda-popin .success {
+	margin: 10px;
+	padding: 10px;
+	font-weight: bold;
+	text-align: center;
+}
+
+#modulo-venda-popin .error {
+	color: red;
+}
+
+#modulo-venda-popin .modulo-venda-post .error {
+	background-color: #FBE1E4;
+	border: 2px solid #FF0000;
+	color: #D83824;
+}
+#modulo-venda-popin .success {
+	color: green;
+}
+
+.link_home {
+	float: right;
+}
+
+.modulo-venda-post {
+	margin: 15px 0;
+}
+.quantidade {
+	width: 40px;
+	text-align: right;
+}
+.quantidade, .campo_end {
+	height: 20px;
+	background-color: #CCCCCC;
+	border: 1px solid #887777;
+	font-size: 14px;
+}
+label#label-quantidade {
+	font-weight: bold;
+}
+.botao-post {
+	height: 30px;
+	color: white;
+	background-color: #444444;
+	padding: 5px;
+	margin: 0 4px;
+}
+
+/*
+ * Form endereco
+ */
+
+#frm-modulo-endereco {
+	margin: 20px 0;
+
+}
+
+#frm-modulo-endereco label {
+	font-size: 12px;
+	font-weight: bold;
+}
+.campo_error {
+	background-color: #FBE1E4;
+}
+.campo {
+	height: 18px !important;
+	width: 40%;
+}
+.row {
+	padding: 10px 0;
+	clear: both;
+}
+
+.row input {
+	float: left;
+	width: 60%;
+}
+
+.row label {
+	float: left;
+	width: 20%;
+	text-align: right;
+	padding: 0 15px 0 0;
+}
+
+/*
+ *
+ * tabela
+ */
+
+table#modulo-finalizar {
+	margin: 20px 0;
+	clear: both;
+
+}
+
+table#modulo-finalizar thead th, table#modulo-finalizar tbody tr td, table#modulo-finalizar tfoot tr {
+	border: 1px solid #DEDEDE;
+	padding: 5px;
+}
+
+table#modulo-finalizar  {
+	background-color: #F6F6F6;
+	border-collapse:collapse;
+
+}
+table#modulo-finalizar thead th, table#modulo-finalizar tfooter tr {
+	background-color: #E3E3E3;
+
+}
+#modulo-acoes {
+	float: right;
+	margin: 15px;
+}
+#modulo-formas input {
+	margin: 5px;
+}
