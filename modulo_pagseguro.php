@@ -477,7 +477,7 @@ function modulo_venda_transacao() {
 					}
 				}
 			} else {
-> > 				wp_redirect(get_bloginfo('wpurl') . '/wp-admin/edit.php?page='.plugin_basename(dirname(__FILE__)).'/modulo-vendas.php&action=apagar&error=1');
+				wp_redirect(get_bloginfo('wpurl') . '/wp-admin/edit.php?page='.plugin_basename(dirname(__FILE__)).'/modulo-vendas.php&action=apagar&error=1');
 			}
 
 		}
