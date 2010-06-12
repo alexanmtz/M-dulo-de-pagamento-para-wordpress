@@ -101,19 +101,19 @@
 					'modulo-venda-quantidade[]' : quantidade
 				},function(data){
 					if(data) {
-						$('.success').remove();
-						$('.error').remove();
-						$('.fields','#modulo-venda-popin').after('<p class="success">Seu contato foi realizada com sucesso. O vendedor entrar&aacute; em contato com voc&ecirc; para fornecer os dados para transfer&ecirc;ncia banc&aacute;ria</p>')
+						jQuery('.success').remove();
+						jQuery('.error').remove();
+						jQuery('.fields','#modulo-venda-popin').after('<p class="success">Seu contato foi realizada com sucesso. O vendedor entrar&aacute; em contato com voc&ecirc; para fornecer os dados para transfer&ecirc;ncia banc&aacute;ria</p>');
 					} else {
-						$('.success').remove();
-						$('.error').remove();
-						$('.fields','#modulo-venda-popin').after('<p class="error">Hove um erro para finalizar a compra, por favor entre em contato com o administrador do blog</p>')
+						jQuery('.success').remove();
+						jQuery('.error').remove();
+						jQuery('.fields','#modulo-venda-popin').after('<p class="error">Hove um erro para finalizar a compra, por favor entre em contato com o administrador do blog</p>');
 					}
 				});
 			} else {
-				$('.success').remove();
-				$('.error').remove();
-				$('.fields','#modulo-venda-popin').after('<p class="error">Campo nome, e-mail ou forma de envio inv&aacute;lido(s)</p>');
+				jQuery('.success').remove();
+				jQuery('.error').remove();
+				jQuery('.fields','#modulo-venda-popin').after('<p class="error">Campo nome, e-mail ou forma de envio inv&aacute;lido(s)</p>');
 			}
 
 			return false;

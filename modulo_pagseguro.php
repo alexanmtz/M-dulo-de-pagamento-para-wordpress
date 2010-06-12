@@ -362,12 +362,12 @@ function modulo_post_compravel($content) {
 
 function modulo_venda_banner_widget($args) {
 	extract($args);
-    $plugin_path = get_bloginfo('wpurl').'/'.PLUGINDIR.'/'.'modulo-pagseguro'.'/';
+    $plugin_path = WP_PLUGIN_URL.'/'.plugin_basename(dirname(__FILE__));
     $cat_id = get_option('modulo_venda_cat');
     if(!$_REQUEST['adicionar']) {
 	    echo $before_widget;
     	echo '<a href="'.get_category_link($cat_id).'">';
-	    echo '<img src="'.$plugin_path.'banner.gif" />';
+	    echo '<img src="'.$plugin_path.'/banner.gif" />';
 	    echo '</a>';
 	    echo $after_widget;
     }
@@ -510,21 +510,15 @@ add_action("admin_post_modulo_venda_transacao", "modulo_venda_transacao");
 
 function addHeaderCode() {
 	echo '<script type="text/javascript">ajaxurl = "'.admin_url('admin-ajax.php').'";</script>';
-	echo '<link type="text/css" rel="stylesheet" href="' . get_bloginfo('wpurl').'/'. PLUGINDIR.'/'.'modulo-pagseguro/modulo_venda.css" />';
-	echo '<link type="text/css" rel="stylesheet" href="' . get_bloginfo('wpurl').'/'. PLUGINDIR.'/'.'modulo-pagseguro/css/jquery-ui-1.7.2.custom.css" />';
+	echo '<link type="text/css" rel="stylesheet" href="' . WP_PLUGIN_URL.'/'.plugin_basename(dirname(__FILE__)).'/modulo_venda.css" />';
+	echo '<link type="text/css" rel="stylesheet" href="' . WP_PLUGIN_URL.'/'.plugin_basename(dirname(__FILE__)).'/css/jquery-ui-1.7.2.custom.css" />';
 }
 
 function modulo_venda_scripts() {
-
-	//if(!is_admin()) {
-		wp_enqueue_script( 'jquery-new', plugins_url('/modulo-pagseguro/js/jquery-1.3.2.js'), array(),'1.3.2');
-		//wp_enqueue_script('jquery-ui-core');
-		//wp_enqueue_script('jquery-ui-dialog');
-		wp_enqueue_script( 'jquery-ui-core-new', plugins_url('/modulo-pagseguro/js/ui.core.min.js'), array('jquery-new'),'1.7.2');
-		wp_enqueue_script( 'jquery-ui-dialog-new', plugins_url('/modulo-pagseguro/js/ui.dialog.min.js'), array('jquery-ui-core-new'),'1.7.2');
-		wp_enqueue_script( 'modulo-pagseguro-main-js', WP_PLUGIN_URL.'/modulo-pagseguro/script.js', array('jquery-new','jquery-ui-core-new','jquery-ui-dialog-new'));
-		//wp_enqueue_style( 'jquery-ui-new', plugins_url('/modulo-pagseguro/css/jquery-ui-1.7.2.custom.css'));
-	//}
+		wp_enqueue_script('jquery');
+		wp_enqueue_script('jquery-ui-core');
+		wp_enqueue_script('jquery-ui-dialog');
+		wp_enqueue_script( 'modulo-pagseguro-main-js', WP_PLUGIN_URL.'/'.plugin_basename(dirname(__FILE__)).'/script.js', array('jquery','jquery-ui-core','jquery-ui-dialog'));
 }
 
 function modulo_venda_obter_info() {
