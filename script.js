@@ -78,15 +78,15 @@
 				var quantidade = [];
 
 				jQuery('.modulo-venda-item-produto').each(function(){
-					produto.push($(this).text());
+					produto.push(jQuery(this).text());
 				});
 
 				jQuery('.modulo-venda-item-valor').each(function(){
-					valor.push($(this).text());
+					valor.push(jQuery(this).text());
 				});
 
 				jQuery('.modulo-venda-item-quantidade').each(function(){
-					quantidade.push($(this).text());
+					quantidade.push(jQuery(this).text());
 				});
 
 				jQuery.post(ajaxurl,{
