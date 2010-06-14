@@ -20,13 +20,13 @@ if($_GET['action']=='apagar') {
 		$message = "Vendas excluídas com sucesso";
 	}
 }
- 
+
 $items = mysql_num_rows(mysql_query("SELECT * from $table_name")); // number of total rows in the database
 
 if($items > 0) {
 	$p = new pagination;
 	$p->items($items);
-	$p->limit(10); // Limit entries per page
+	$p->limit(20); // Limit entries per page
 	$p->target("tools.php?page=M-dulo-de-pagamento-para-wordpress/modulo-vendas.php");
 	$p->currentPage($_GET[$p->paging]); // Gets and validates the current page
 	$p->calculate(); // Calculates what to show
@@ -41,15 +41,21 @@ if($items > 0) {
 
 	//Query for limit paging
 	$limit = "LIMIT " . ($p->page - 1) * $p->limit  . ", " . $p->limit;
-	
-	$obter_vendas = "SELECT * from $table_name order by id desc $limit";
+
+	if($_GET['ordenar_por']) {
+		$ordenar_por = $_GET['ordenar_por'];
+		$obter_vendas = "SELECT * from $table_name order by $ordenar_por asc $limit";
+	} else {
+		$obter_vendas = "SELECT * from $table_name order by id asc $limit";		
+	}
 	$vendas = $wpdb->get_results($obter_vendas);
-	
+	$colunas = $wpdb->get_col_info('name');
+
 
 } else {
 	echo "No Record Found";
 }
- 
+
 
 ?>
 <?php if ( $message != false ) { ?>
@@ -62,12 +68,11 @@ if($items > 0) {
 <form action="admin-post.php" method="post"><?php wp_nonce_field('modulo_venda_transacao'); ?>
 <input type="hidden" name="action" value="modulo_venda_transacao">
 <div class="tablenav">
-<div class="tablenav-pages">
-<?php echo $p->show();  // Echo out the list of paging. ?>
+<div class="tablenav-pages"><?php echo $p->show();  // Echo out the list of paging. ?>
 </div>
 <div class="alignleft"><input type="submit" value="Apagar"
 	name="modulo_venda_transacao" class="button-secondary delete" /> <select
-	name='modulo-venda-status' id='filtro' class='postform'>
+	name="modulo-venda-status" id="status" class= "postform">
 	<option value='pendente'>Pendente</option>
 	<option value="aguardando pagamento">Aguardando Pagamento</option>
 	<option value="enviando">Enviando</option>
@@ -75,12 +80,24 @@ if($items > 0) {
 </select> <input type="submit" id="post-query-submit"
 	value="Modificar Status" name="modulo_venda_transacao"
 	class="button-secondary" /></div>
+<div class="alignleft">
+	<label for="modulo-venda-filtrar">Ordenar</label>
+	<select name="modulo-venda-ordenar" id="filtro" class="postform">
+	<?php foreach($colunas as $coluna) :?>
+		<?php if($coluna!="produto_id") : ?>
+			<option value='<?php echo $coluna; ?>'><?php echo $coluna; ?></option>
+		<?php endif; ?>
+	<?php endforeach; ?>
+</select> <input type="submit" id="post-query-submit"
+	value="Ordenar" name="modulo_venda_transacao"
+	class="button-secondary" /></div>
 </div>
 <br class="clear">
 <table class="widefat">
 	<thead>
 		<tr valign="top">
 			<th class="check-column" scope="col"></th>
+			<th scope="col"><?php _e('ID'); ?></th>
 			<th scope="col"><?php _e('Data'); ?></th>
 			<th scope="col"><?php _e('Nome'); ?></th>
 			<th scope="col"><?php _e('Produtos'); ?></th>
@@ -107,6 +124,8 @@ if($items > 0) {
 				type="checkbox" valign="bottom" value="<?php echo $venda->id; ?>"
 				name="vendas[]" /></th>
 			<td class="<?php if ($count == 1){echo 'alternate';} ?>" valign="top">
+			<?php echo $venda->id; ?></td>
+			<td class="<?php if ($count == 1){echo 'alternate';} ?>" valign="top">
 			<?php echo $venda->data; ?></td>
 			<td class="<?php if ($count == 1){echo 'alternate';} ?>" valign="top">
 			<?php echo $venda->nome; ?></td>
@@ -129,6 +148,9 @@ if($items > 0) {
 		<?php } ?>
 	</tbody>
 </table>
+<div class="tablenav">
+<div class="tablenav-pages"><?php echo $p->show();  // Echo out the list of paging. ?>
+</div>
 </form>
 
 </div>
