@@ -27,7 +27,7 @@ if($items > 0) {
 	$p = new pagination;
 	$p->items($items);
 	$p->limit(20); // Limit entries per page
-	$p->target("tools.php?page=M-dulo-de-pagamento-para-wordpress/modulo-vendas.php");
+	$p->target("tools.php?page=".plugin_basename(dirname(__FILE__))."/modulo-vendas.php");
 	$p->currentPage($_GET[$p->paging]); // Gets and validates the current page
 	$p->calculate(); // Calculates what to show
 	$p->parameterName('paging');
