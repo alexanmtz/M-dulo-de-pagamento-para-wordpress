@@ -24,10 +24,18 @@ if($_GET['action']=='apagar') {
 $items = mysql_num_rows(mysql_query("SELECT * from $table_name")); // number of total rows in the database
 
 if($items > 0) {
+	
+	$ordenar_por = $_GET['ordenar_por'];
+	
+	
+	if($ordenar_por) {
+		$ordenar_query = "&ordenar_por=".$ordenar_por;
+	}
+	
 	$p = new pagination;
 	$p->items($items);
 	$p->limit(20); // Limit entries per page
-	$p->target("tools.php?page=".plugin_basename(dirname(__FILE__))."/modulo-vendas.php");
+	$p->target("tools.php?page=".plugin_basename(dirname(__FILE__))."/modulo-vendas.php".$ordenar_query);
 	$p->currentPage($_GET[$p->paging]); // Gets and validates the current page
 	$p->calculate(); // Calculates what to show
 	$p->parameterName('paging');
@@ -42,8 +50,7 @@ if($items > 0) {
 	//Query for limit paging
 	$limit = "LIMIT " . ($p->page - 1) * $p->limit  . ", " . $p->limit;
 
-	if($_GET['ordenar_por']) {
-		$ordenar_por = $_GET['ordenar_por'];
+	if($ordenar_por) {
 		$obter_vendas = "SELECT * from $table_name order by $ordenar_por asc $limit";
 	} else {
 		$obter_vendas = "SELECT * from $table_name order by id asc $limit";		
