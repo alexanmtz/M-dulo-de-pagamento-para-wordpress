@@ -96,6 +96,8 @@ if($items > 0) {
 	<option value="finalizado">Finalizado</option>
 </select> <input type="submit" id="post-query-submit"
 	value="Modificar Status" name="modulo_venda_transacao"
+	class="button-secondary" /><input type="submit" id="post-query-submit"
+	value="Filtrar" name="modulo_venda_transacao"
 	class="button-secondary" /></div>
 <div class="alignleft">
 	<label for="modulo-venda-filtrar">Ordenar</label>
@@ -105,16 +107,6 @@ if($items > 0) {
 			<option value='<?php echo $coluna; ?>'><?php echo $coluna; ?></option>
 		<?php endif; ?>
 	<?php endforeach; ?>
-</select> <input type="submit" id="post-query-submit"
-	value="Ordenar" name="modulo_venda_transacao"
-	class="button-secondary" /></div>
-<div class="alignleft">
-	<label for="modulo-venda-filtrar">Filtrar</label>
-	<select name="modulo-venda-filtrar" id="filtro" class="postform">
-			<option value='pendente'>Pendente</option>
-		<option value="aguardando pagamento">Aguardando Pagamento</option>
-		<option value="enviando">Enviando</option>
-		<option value="finalizado">Finalizado</option>
 </select> <input type="submit" id="post-query-submit"
 	value="Ordenar" name="modulo_venda_transacao"
 	class="button-secondary" /></div>
