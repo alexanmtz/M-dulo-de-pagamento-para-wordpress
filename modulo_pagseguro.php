@@ -448,6 +448,8 @@ function modulo_venda_transacao() {
 	$status_escolhido = $_POST['modulo-venda-status'];
 	
 	$coluna = $_POST['modulo-venda-ordenar'];
+	
+	$filtro = $_POST['modulo-venda-filtrar'];
 
 	if($transacao=='Apagar') {
 		if(check_admin_referer('modulo_venda_transacao')){
@@ -507,6 +509,10 @@ function modulo_venda_transacao() {
 	
 	if($transacao=='Ordenar') {
 		wp_redirect(get_bloginfo('wpurl') . '/wp-admin/edit.php?page='.plugin_basename(dirname(__FILE__)).'/modulo-vendas.php&ordenar_por='.$coluna);
+	}
+	
+	if($transacao='Filtrar') {
+		wp_redirect(get_bloginfo('wpurl') . '/wp-admin/edit.php?page='.plugin_basename(dirname(__FILE__)).'/modulo-vendas.php&filtrar_por='.$filtro);
 	}
 }
 

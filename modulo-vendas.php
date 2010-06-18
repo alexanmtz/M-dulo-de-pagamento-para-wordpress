@@ -27,15 +27,20 @@ if($items > 0) {
 	
 	$ordenar_por = $_GET['ordenar_por'];
 	
+	$filtrar_por = $_GET['filtrar_por'];
 	
 	if($ordenar_por) {
 		$ordenar_query = "&ordenar_por=".$ordenar_por;
 	}
 	
+	if($filtrar_por) {
+		$filtrar_query = "&filtrar_por=".$filtrar_por;
+	}
+	
 	$p = new pagination;
 	$p->items($items);
 	$p->limit(20); // Limit entries per page
-	$p->target("tools.php?page=".plugin_basename(dirname(__FILE__))."/modulo-vendas.php".$ordenar_query);
+	$p->target("tools.php?page=".plugin_basename(dirname(__FILE__))."/modulo-vendas.php".$ordenar_query.$filtrar_query);
 	$p->currentPage($_GET[$p->paging]); // Gets and validates the current page
 	$p->calculate(); // Calculates what to show
 	$p->parameterName('paging');
@@ -53,8 +58,13 @@ if($items > 0) {
 	if($ordenar_por) {
 		$obter_vendas = "SELECT * from $table_name order by $ordenar_por asc $limit";
 	} else {
-		$obter_vendas = "SELECT * from $table_name order by id asc $limit";		
+		$obter_vendas = "SELECT * from $table_name order by id asc $limit";			
 	}
+	
+	if($filtrar_por) {
+		$obter_vendas = "SELECT * from $table_name order by id asc $limit where status=$filtrar_por";
+	}
+	
 	$vendas = $wpdb->get_results($obter_vendas);
 	$colunas = $wpdb->get_col_info('name');
 
@@ -89,12 +99,22 @@ if($items > 0) {
 	class="button-secondary" /></div>
 <div class="alignleft">
 	<label for="modulo-venda-filtrar">Ordenar</label>
-	<select name="modulo-venda-ordenar" id="filtro" class="postform">
+	<select name="modulo-venda-ordenar" id="ordem" class="postform">
 	<?php foreach($colunas as $coluna) :?>
 		<?php if($coluna!="produto_id") : ?>
 			<option value='<?php echo $coluna; ?>'><?php echo $coluna; ?></option>
 		<?php endif; ?>
 	<?php endforeach; ?>
+</select> <input type="submit" id="post-query-submit"
+	value="Ordenar" name="modulo_venda_transacao"
+	class="button-secondary" /></div>
+<div class="alignleft">
+	<label for="modulo-venda-filtrar">Filtrar</label>
+	<select name="modulo-venda-filtrar" id="filtro" class="postform">
+			<option value='pendente'>Pendente</option>
+		<option value="aguardando pagamento">Aguardando Pagamento</option>
+		<option value="enviando">Enviando</option>
+		<option value="finalizado">Finalizado</option>
 </select> <input type="submit" id="post-query-submit"
 	value="Ordenar" name="modulo_venda_transacao"
 	class="button-secondary" /></div>
