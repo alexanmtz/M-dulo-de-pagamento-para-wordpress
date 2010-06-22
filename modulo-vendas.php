@@ -29,6 +29,10 @@ if($items > 0) {
 	
 	$filtrar_por = $_GET['filtrar_por'];
 	
+	if($filtrar_por=='todos') {
+		$filtrar_por = false;
+	}
+	
 	if($ordenar_por) {
 		$ordenar_query = "&ordenar_por=".$ordenar_por;
 	}
@@ -62,9 +66,9 @@ if($items > 0) {
 	}
 	
 	if($filtrar_por) {
-		$obter_vendas = "SELECT * from $table_name order by id asc $limit where status=$filtrar_por";
+		$obter_vendas = "SELECT * from $table_name where status='$filtrar_por' order by id asc $limit";
 	}
-	
+	echo $obter_vendas;
 	$vendas = $wpdb->get_results($obter_vendas);
 	$colunas = $wpdb->get_col_info('name');
 
@@ -88,15 +92,16 @@ if($items > 0) {
 <div class="tablenav-pages"><?php echo $p->show();  // Echo out the list of paging. ?>
 </div>
 <div class="alignleft"><input type="submit" value="Apagar"
-	name="modulo_venda_transacao" class="button-secondary delete" /> <select
-	name="modulo-venda-status" id="status" class= "postform">
-	<option value='pendente'>Pendente</option>
-	<option value="aguardando pagamento">Aguardando Pagamento</option>
-	<option value="enviando">Enviando</option>
-	<option value="finalizado">Finalizado</option>
-</select> <input type="submit" id="post-query-submit"
-	value="Modificar Status" name="modulo_venda_transacao"
-	class="button-secondary" /><input type="submit" id="post-query-submit"
+	name="modulo_venda_transacao" class="button-secondary delete" />
+	<select name="modulo-venda-status" id="status" class= "postform">
+		<option value="todos">Todos</option>
+		<option value='pendente'>Pendente</option>
+		<option value="aguardando pagamento">Aguardando Pagamento</option>
+		<option value="enviando">Enviando</option>
+		<option value="finalizado">Finalizado</option>
+	</select>
+	<input type="submit" id="post-query-status" value="Modificar Status" name="modulo_venda_transacao"
+	class="button-secondary" /><input type="submit" id="post-query-filtrar"
 	value="Filtrar" name="modulo_venda_transacao"
 	class="button-secondary" /></div>
 <div class="alignleft">
