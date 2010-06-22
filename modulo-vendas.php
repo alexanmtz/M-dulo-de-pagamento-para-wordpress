@@ -68,7 +68,6 @@ if($items > 0) {
 	if($filtrar_por) {
 		$obter_vendas = "SELECT * from $table_name where status='$filtrar_por' order by id asc $limit";
 	}
-	echo $obter_vendas;
 	$vendas = $wpdb->get_results($obter_vendas);
 	$colunas = $wpdb->get_col_info('name');
 
