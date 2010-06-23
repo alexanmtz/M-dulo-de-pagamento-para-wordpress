@@ -21,13 +21,17 @@ if($_GET['action']=='apagar') {
 	}
 }
 
-$items = mysql_num_rows(mysql_query("SELECT * from $table_name")); // number of total rows in the database
+$ordenar_por = $_GET['ordenar_por'];
+
+$filtrar_por = $_GET['filtrar_por'];
+
+if(!$filtrar_por || $filtrar_por=='todos') {
+	$items = mysql_num_rows(mysql_query("SELECT * from $table_name")); // number of total rows in the database	
+} else {
+	$items = mysql_num_rows(mysql_query("SELECT * from $table_name where status='$filtrar_por'")); // number of total rows in the database
+}
 
 if($items > 0) {
-	
-	$ordenar_por = $_GET['ordenar_por'];
-	
-	$filtrar_por = $_GET['filtrar_por'];
 	
 	if($filtrar_por=='todos') {
 		$filtrar_por = false;
@@ -43,19 +47,18 @@ if($items > 0) {
 	
 	$p = new pagination;
 	$p->items($items);
-	$p->limit(20); // Limit entries per page
-	$p->target("tools.php?page=".plugin_basename(dirname(__FILE__))."/modulo-vendas.php".$ordenar_query.$filtrar_query);
+	$p->limit(30); // Limit entries per page
 	$p->currentPage($_GET[$p->paging]); // Gets and validates the current page
-	$p->calculate(); // Calculates what to show
+	 // Calculates what to show
 	$p->parameterName('paging');
 	$p->adjacents(1); //No. of page away from the current page
-
+	$p->target("tools.php?page=".plugin_basename(dirname(__FILE__))."/modulo-vendas.php".$ordenar_query.$filtrar_query);
 	if(!isset($_GET['paging'])) {
 		$p->page = 1;
 	} else {
 		$p->page = $_GET['paging'];
 	}
-
+	$p->calculate();
 	//Query for limit paging
 	$limit = "LIMIT " . ($p->page - 1) * $p->limit  . ", " . $p->limit;
 
@@ -88,7 +91,10 @@ if($items > 0) {
 <form action="admin-post.php" method="post"><?php wp_nonce_field('modulo_venda_transacao'); ?>
 <input type="hidden" name="action" value="modulo_venda_transacao">
 <div class="tablenav">
-<div class="tablenav-pages"><?php echo $p->show();  // Echo out the list of paging. ?>
+<div class="tablenav-pages">
+<?php 
+	echo $p->show();  // Echo out the list of paging.
+?>
 </div>
 <div class="alignleft"><input type="submit" value="Apagar"
 	name="modulo_venda_transacao" class="button-secondary delete" />

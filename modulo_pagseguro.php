@@ -489,19 +489,20 @@ function modulo_venda_transacao() {
 
 		if(check_admin_referer('modulo_venda_transacao')){
 				$modificar_status = true;
-				foreach($_POST['vendas'] as $venda) {
+				if($_POST['vendas']) {
+					foreach($_POST['vendas'] as $venda) {
+						if($modificar_status) {
+							$modificar_status = $wpdb->update( $table_name_venda, array( 'status' => $status_escolhido), array( 'id' => $venda ), array( '%s' ), array( '%d' ) );
+						} else {
+							$modificar_status = false;
+						}
+					}
 					if($modificar_status) {
-						$modificar_status = $wpdb->update( $table_name_venda, array( 'status' => $status_escolhido), array( 'id' => $venda ), array( '%s' ), array( '%d' ) );
+						wp_redirect(get_bloginfo('wpurl') . '/wp-admin/edit.php?page='.plugin_basename(dirname(__FILE__)).'/modulo-vendas.php&action=status&error=0');
 					} else {
-						$modificar_status = false;
+						wp_redirect(get_bloginfo('wpurl') . '/wp-admin/edit.php?page='.plugin_basename(dirname(__FILE__)).'/modulo-vendas.php&action=status&error=1&status='.$status_escolhido);
 					}
 				}
-				if($modificar_status) {
-					wp_redirect(get_bloginfo('wpurl') . '/wp-admin/edit.php?page='.plugin_basename(dirname(__FILE__)).'/modulo-vendas.php&action=status&error=0');
-				} else {
-					wp_redirect(get_bloginfo('wpurl') . '/wp-admin/edit.php?page='.plugin_basename(dirname(__FILE__)).'/modulo-vendas.php&action=status&error=1&status='.$status_escolhido);
-				}
-				
 			}
 	}
 	
