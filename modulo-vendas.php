@@ -25,9 +25,12 @@ $ordenar_por = $_GET['ordenar_por'];
 
 $filtrar_por = $_GET['filtrar_por'];
 
-if(!$filtrar_por || $filtrar_por=='todos') {
+$filtrar_por = str_replace("_"," ",$filtrar_por);
+
+if(!$filtrar_por || $filtrar_por == 'todos') {
 	$items = mysql_num_rows(mysql_query("SELECT * from $table_name")); // number of total rows in the database	
 } else {
+	
 	$items = mysql_num_rows(mysql_query("SELECT * from $table_name where status='$filtrar_por'")); // number of total rows in the database
 }
 
@@ -101,7 +104,7 @@ if($items > 0) {
 	<select name="modulo-venda-status" id="status" class= "postform">
 		<option value="todos">Todos</option>
 		<option value='pendente'>Pendente</option>
-		<option value="aguardando pagamento">Aguardando Pagamento</option>
+		<option value="aguardando_pagamento">Aguardando Pagamento</option>
 		<option value="enviando">Enviando</option>
 		<option value="finalizado">Finalizado</option>
 	</select>
