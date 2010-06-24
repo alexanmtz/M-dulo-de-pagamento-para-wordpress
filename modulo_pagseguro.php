@@ -47,7 +47,8 @@ function instalar_modulo_venda() {
 			  email text NOT NULL,
 			  status text NOT NULL,
 			  envio text NOT NULL,
-			  produto_id text NOT NULL
+			  produto_id text NOT NULL,
+			  anotacoes varchar(60)
 			);";
 
 		require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
@@ -427,8 +428,9 @@ function modulo_venda_gravar_cliente() {
 			'email' => $email,
 			'status' => 'pendente',
 			'envio' => $envio,
-			'produto_id' => join(',',$id_list)
-		), array( '%s', '%s', '%s', '%s', '%s', '%s', '%s' ) );
+			'produto_id' => join(',',$id_list),
+			'anotacoes' => ''
+		), array( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' ) );
 	}
 
   	if($results_venda) {
@@ -521,8 +523,8 @@ add_action("admin_post_modulo_venda_transacao", "modulo_venda_transacao");
 
 function addHeaderCode() {
 	echo '<script type="text/javascript">ajaxurl = "'.admin_url('admin-ajax.php').'";</script>';
-	echo '<link type="text/css" rel="stylesheet" href="' . WP_PLUGIN_URL.'/'.plugin_basename(dirname(__FILE__)).'/modulo_venda.css" />';
-	echo '<link type="text/css" rel="stylesheet" href="' . WP_PLUGIN_URL.'/'.plugin_basename(dirname(__FILE__)).'/css/jquery-ui-1.7.2.custom.css" />';
+	//echo '<link type="text/css" rel="stylesheet" href="' . WP_PLUGIN_URL.'/'.plugin_basename(dirname(__FILE__)).'/modulo_venda.css" />';
+	//echo '<link type="text/css" rel="stylesheet" href="' . WP_PLUGIN_URL.'/'.plugin_basename(dirname(__FILE__)).'/css/jquery-ui-1.7.2.custom.css" />';
 }
 
 function modulo_venda_scripts() {
@@ -530,6 +532,8 @@ function modulo_venda_scripts() {
 		wp_enqueue_script('jquery-ui-core');
 		wp_enqueue_script('jquery-ui-dialog');
 		wp_enqueue_script( 'modulo-pagseguro-main-js', WP_PLUGIN_URL.'/'.plugin_basename(dirname(__FILE__)).'/script.js', array('jquery','jquery-ui-core','jquery-ui-dialog'));
+		wp_enqueue_style( 'dialog', WP_PLUGIN_URL.'/'.plugin_basename(dirname(__FILE__)).'/css/jquery-ui-1.7.2.custom.css');
+		wp_enqueue_style( 'modulo-venda', WP_PLUGIN_URL.'/'.plugin_basename(dirname(__FILE__)).'/modulo_venda.css');
 }
 
 function modulo_venda_obter_info() {
@@ -579,12 +583,30 @@ function modulo_venda_obter_info() {
 	die();
 }
 
+function modulo_venda_anotacoes() {
+	global $wpdb;
+	$table_name_produto = $wpdb->prefix . "modulo_produto";
+	$table_name_venda = $wpdb->prefix . "modulo_venda";
+	
+	$anotacao = $_POST['anotacao'];
+	$venda_id = $_POST['venda_id'];
+	
+	$updated = $wpdb->update( $table_name_venda, array( 'anotacoes' => $anotacao ), array( 'id' => $venda_id ), array( '%s' ), array( '%d' ) );
+	
+	if($updated) {
+		echo $anotacao;
+	}
+	
+	die();
+}
+
 // Adicionar menu de gerenciar vendas
 add_action("admin_menu", "modulo_venda_listar_vendas");
 
 /* Ajax */
 add_action('wp_ajax_gravar_cliente', 'modulo_venda_gravar_cliente');
 add_action('wp_ajax_nopriv_gravar_cliente', 'modulo_venda_gravar_cliente');
+add_action('wp_ajax_anotacoes','modulo_venda_anotacoes');
 
 add_action('wp_ajax_obter_info', 'modulo_venda_obter_info');
 add_action('wp_ajax_nopriv_obter_info', 'modulo_venda_obter_info');
@@ -596,6 +618,8 @@ add_action('template_redirect','modulo_venda_scripts');
 
 //inicializando o plugin com as opcoes registradas
 add_action('admin_init', 'modulo_venda_plugin_init' );
+
+add_action('admin_init', 'modulo_venda_scripts' );
 
 // inserido a pagina de opcoes do plugin
 add_action('admin_menu','modulo_venda_menu');

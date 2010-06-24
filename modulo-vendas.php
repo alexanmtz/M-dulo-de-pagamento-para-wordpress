@@ -137,6 +137,7 @@ if($items > 0) {
 			<th scope="col"><?php _e('Modo de envio'); ?></th>
 			<th scope="col"><?php _e('E-mail'); ?></th>
 			<th scope="col"><?php _e('Status'); ?></th>
+			<th scope="col"><?php _e('Anotações'); ?></th>
 		</tr>
 	</thead>
 	<tbody>
@@ -155,7 +156,7 @@ if($items > 0) {
 				class="check-column <?php if ($count == 1){echo 'alternate';} ?>"><input
 				type="checkbox" valign="bottom" value="<?php echo $venda->id; ?>"
 				name="vendas[]" /></th>
-			<td class="<?php if ($count == 1){echo 'alternate';} ?>" valign="top">
+			<td class="<?php if ($count == 1){echo 'alternate';} ?> venda-id" valign="top">
 			<?php echo $venda->id; ?></td>
 			<td class="<?php if ($count == 1){echo 'alternate';} ?>" valign="top">
 			<?php echo $venda->data; ?></td>
@@ -176,6 +177,22 @@ if($items > 0) {
 			<?php echo $venda->email; ?></td>
 			<td class="<?php if ($count == 1){echo 'alternate';} ?>" valign="top">
 			<?php echo $venda->status; ?></td>
+			<td class="<?php if ($count == 1){echo 'alternate';} ?> anotacoes" valign="top">
+				<?php 
+					if($venda->anotacoes) {
+						$anotacao = $venda->anotacoes." ";
+				        $anotacao = substr($anotacao,0,25);
+				        $anotacao = substr($anotacao,0,strrpos($anotacao,' '));
+				        $anotacao = $anotacao."...";
+					} else {
+						$anotacao = 'Adicionar nota';	
+					}
+				?>
+				<a href="#" class="manage"><?php echo $anotacao; ?></a>
+				<div class="popin">
+					<textarea class="anotacao" name="anotacao"><?php echo $venda->anotacoes; ?></textarea>
+				</div>
+			</td>
 		</tr>
 		<?php } ?>
 	</tbody>

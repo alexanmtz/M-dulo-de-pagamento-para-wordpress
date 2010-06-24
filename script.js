@@ -19,6 +19,7 @@
 		$modulo_peso.val(peso_atual);
 	});
 
+	//popin na area publica das informacoes de cada tipo de compra
     jQuery('.modulo-venda-ajuda').bind('click', function(){
 		jQuery('<div class="carregando"><p>carregando...<p></div>').dialog({
 			modal: true,
@@ -119,7 +120,39 @@
 			return false;
 		}
 	});
-
-	// Dialog do pagamento por transferencia bancaria
+	// Dialog das anotacoes da venda
+	jQuery('.anotacoes a.manage').bind('click', function(){
+		var link = this;
+		jQuery(this).next().dialog({
+			width: 300,
+			height: 300,
+			buttons: {
+				'Salvar' : function() {
+					jQuery.ajax({
+						type : 'POST',
+						dataType : 'json',
+						url : ajaxurl,
+						data : {
+							'action' : 'anotacoes',
+							'anotacao' : jQuery(this).parent().find('textarea').val(),
+							'venda_id' : parseInt(jQuery(link).parents('td').siblings('.venda-id').text())
+						},
+						success : function(texto) {
+							if (texto!=null) {
+								jQuery('.carregando').dialog('close');
+								$(link).text(texto);
+							} else {
+								if(console) {
+									console.info('problema para carregar dialog');
+								}
+							}
+						}
+    				});
+				}
+			} 
+		});
+		
+		return false;
+	});
 
  });

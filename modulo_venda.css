@@ -9,6 +9,17 @@
  *
  */
 
+.anotacoes .popin {
+	display: none;
+}
+
+.anotacao  {
+	width: 200px;
+	height: 150px;
+	padding: 5px;
+	margin: 10px;
+}
+
 .parts {
 	clear: both;
 }
