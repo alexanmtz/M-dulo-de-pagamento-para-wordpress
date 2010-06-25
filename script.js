@@ -123,9 +123,10 @@
 	// Dialog das anotacoes da venda
 	jQuery('.anotacoes a.manage').bind('click', function(){
 		var link = this;
-		jQuery(this).next().dialog({
-			width: 300,
-			height: 300,
+		var note_dialog = jQuery(this).next();
+		note_dialog.dialog({
+			width: 608,
+			height: 250,
 			buttons: {
 				'Salvar' : function() {
 					jQuery.ajax({
@@ -137,10 +138,12 @@
 							'anotacao' : jQuery(this).parent().find('textarea').val(),
 							'venda_id' : parseInt(jQuery(link).parents('td').siblings('.venda-id').text())
 						},
-						success : function(texto) {
-							if (texto!=null) {
-								jQuery('.carregando').dialog('close');
-								$(link).text(texto);
+						complete : function(texto) {
+							//jQuery(dialog).dialog('destroy');
+							jQuery(note_dialog).dialog('close');
+				
+							if (texto) {
+								jQuery(link).text(texto);
 							} else {
 								if(console) {
 									console.info('problema para carregar dialog');
