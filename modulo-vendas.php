@@ -178,20 +178,11 @@ if($items > 0) {
 			<td class="<?php if ($count == 1){echo 'alternate';} ?>" valign="top">
 			<?php echo $venda->status; ?></td>
 			<td class="<?php if ($count == 1){echo 'alternate';} ?> anotacoes" valign="top">
-				<?php 
-					if($venda->anotacoes) {
-						$anotacao = $venda->anotacoes." ";
-				        $anotacao = substr($anotacao,0,25);
-				        $anotacao = substr($anotacao,0,strrpos($anotacao,' '));
-				        $anotacao = $anotacao."...";
-					} else {
-						$anotacao = 'Adicionar nota';	
-					}
-				?>
-				<a href="#" class="manage"><?php echo $anotacao; ?></a>
-				<div class="popin">
-					<textarea class="anotacao" name="anotacao"><?php echo $venda->anotacoes; ?></textarea>
-				</div>
+				<?php if($venda->anotacoes) : ?>
+					<a href="#" class="manage"><?php echo $venda->anotacoes; ?></a>
+				<?php else : ?>
+					<a href="#" class="manage">Adicionar nota</a>
+				<?php endif; ?>
 			</td>
 		</tr>
 		<?php } ?>
@@ -199,6 +190,9 @@ if($items > 0) {
 </table>
 <div class="tablenav">
 <div class="tablenav-pages"><?php echo $p->show();  // Echo out the list of paging. ?>
+</div>
+<div class="anotacao-popin">
+	<textarea class="anotacao" name="anotacao"><?php echo $venda->anotacoes; ?></textarea>
 </div>
 </form>
 

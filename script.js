@@ -121,41 +121,61 @@
 		}
 	});
 	// Dialog das anotacoes da venda
-	jQuery('.anotacoes a.manage').bind('click', function(){
-		var link = this;
-		var note_dialog = jQuery(this).next();
-		note_dialog.dialog({
+	
+	jQuery.fn.anotacoes = function() {
+		var $popin = jQuery('.anotacao-popin');
+		
+		$popin.dialog({
 			width: 608,
 			height: 250,
+			autoOpen: false,
 			buttons: {
-				'Salvar' : function() {
+				'Salvar' : function() {					
 					jQuery.ajax({
 						type : 'POST',
 						dataType : 'json',
 						url : ajaxurl,
 						data : {
 							'action' : 'anotacoes',
-							'anotacao' : jQuery(this).parent().find('textarea').val(),
-							'venda_id' : parseInt(jQuery(link).parents('td').siblings('.venda-id').text())
+							'anotacao' : $popin.find('.anotacao').val(),
+							'venda_id' : $popin.data('vendaId')
 						},
 						complete : function(texto) {
-							//jQuery(dialog).dialog('destroy');
-							jQuery(note_dialog).dialog('close');
-				
+							$popin.dialog('close');
+							
 							if (texto) {
-								jQuery(link).text(texto);
+								$popin.data('linkAnotacoes').html(texto.responseText);
 							} else {
 								if(console) {
 									console.info('problema para carregar dialog');
 								}
 							}
 						}
-    				});
+					});
+				},
+				'Cancelar': function(){
+					jQuery(this).dialog('close');
 				}
 			} 
 		});
 		
-		return false;
-	});
-
+		this.each(function(){		
+			var $this = jQuery(this);
+			
+			$this
+				.bind('click', function() {
+					$popin
+						.data('vendaId', parseInt(jQuery(this).parents('td').siblings('.venda-id').text()))
+						.data('linkAnotacoes', $this)
+						.find('.anotacao')
+							.val($this.text())
+							
+					$popin.dialog('open');
+					return false;
+				});
+		});
+	}
+	
+	jQuery('.anotacoes a.manage').anotacoes();
+	
  });
