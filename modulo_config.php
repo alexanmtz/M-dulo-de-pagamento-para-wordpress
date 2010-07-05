@@ -42,6 +42,11 @@ if($modulo_entrega_trans) $modulo_entrega_trans_checked = 'checked="true"';
 
 ?>
 <div class="wrap">
+<?php if ( $message != false ) : ?>
+<div id="message" class="updated fade">
+<p><?php echo $message; ?></p>
+</div>
+<?php endif; ?>
 <h2>Opções do Módulo Pagseguro</h2>
 <p>Para acessar sua conta do pagseguro, por favor acesse <a
 	href="http://www.pagseguro.com.br">o site do pagseguro</a></p>

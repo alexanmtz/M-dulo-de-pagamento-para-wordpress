@@ -84,11 +84,11 @@ if($items > 0) {
 
 
 ?>
-<?php if ( $message != false ) { ?>
+<?php if ( $message != false ) : ?>
 <div id="message" class="updated fade">
 <p><?php echo $message; ?></p>
 </div>
-<?php } ?>
+<?php endif; ?>
 <div class="wrap">
 <h2><?php _e('Gerenciar vendas'); ?></h2>
 <form action="admin-post.php" method="post"><?php wp_nonce_field('modulo_venda_transacao'); ?>

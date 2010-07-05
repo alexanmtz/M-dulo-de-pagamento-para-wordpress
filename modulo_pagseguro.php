@@ -75,15 +75,9 @@ register_activation_hook(__FILE__,'instalar_modulo_venda');
 
 //funcao que adiciona os itens do menu
 function modulo_venda_menu() {
-	
 	add_menu_page( 'Módulo de pagamento', 'Módulo de pagamento', 'administrator', plugin_basename(dirname(__FILE__)).'/modulo-vendas.php', '' , WP_PLUGIN_URL.'/'.plugin_basename(dirname(__FILE__)).'/img/calendar.png');
-	//add_submenu_page( plugin_basename(dirname(__FILE__)).'/modulo-vendas.php', 'Módulo de pagamento', 'Módulo de pagamento', 'administrator', plugin_basename(dirname(__FILE__)).'/modulo-vendas.php');
 	add_submenu_page( plugin_basename(dirname(__FILE__)).'/modulo-vendas.php', 'Envio de E-mail', 'Envio de E-mail', 'administrator', plugin_basename(dirname(__FILE__)).'/modulo_mail.php');
 	add_submenu_page( plugin_basename(dirname(__FILE__)).'/modulo-vendas.php', 'Configurações', 'Configurações', 'administrator', plugin_basename(dirname(__FILE__)).'/modulo_config.php');
-	//add_menu_page( 'Módulo de pagamento', 'Módulo de pagamento', 'administradors', plugin_basename(dirname(__FILE__)).'/modulo-vendas.php', plugin_basename(dirname(__FILE__)).'/modulo-vendas.php', WP_PLUGIN_URL.'/'.plugin_basename(dirname(__FILE__)).'/img/calendar.png' );
-	//add_menu_page('Módulo de pagamento', 'Módulo de pagamento', 'administrator', plugin_basename(dirname(__FILE__)).'/modulo-vendas.php', '', WP_PLUGIN_URL.'/'.plugin_basename(dirname(__FILE__)).'/img/calendar.png');
-	//add_submenu_page('modulo-vendas.php','Opções','Opções', 'administrador', 'submenu-modulo-venda',WP_PLUGIN_URL.'/'.plugin_basename(dirname(__FILE__)).'/modulo_mail.php');
-	//add_options_page('Módulo de venda Pagseguro para Wordpress', 'Modulo de venda Pagseguro para Wordpress', 'manage_options', __FILE__, 'modulo_venda_pagina_opcoes');
 }
 //registrando opcoes
 function modulo_venda_plugin_init(){
@@ -400,13 +394,23 @@ function modulo_venda_transacao() {
 }
 
 add_action("admin_post_modulo_venda_transacao", "modulo_venda_transacao");
+add_action("admin_post_modulo_pagamento_mail_template", "modulo_pagamento_mail_template");
 
-
+function modulo_pagamento_mail_template() {
+	$template = $_POST['modulo_pagamento_mail_template'];
+	
+	$updated = update_option('modulo_pagamento_mail_template', $template);
+	
+	if($updated) {
+		wp_redirect(get_bloginfo('wpurl') . '/wp-admin/admin.php?page='.plugin_basename(dirname(__FILE__)).'/modulo_mail.php&error=0');	
+	} else {
+		wp_redirect(get_bloginfo('wpurl') . '/wp-admin/admin.php?page='.plugin_basename(dirname(__FILE__)).'/modulo_mail.php&error=1');
+	}
+	
+}
 
 function addHeaderCode() {
 	echo '<script type="text/javascript">ajaxurl = "'.admin_url('admin-ajax.php').'";</script>';
-	//echo '<link type="text/css" rel="stylesheet" href="' . WP_PLUGIN_URL.'/'.plugin_basename(dirname(__FILE__)).'/modulo_venda.css" />';
-	//echo '<link type="text/css" rel="stylesheet" href="' . WP_PLUGIN_URL.'/'.plugin_basename(dirname(__FILE__)).'/css/jquery-ui-1.7.2.custom.css" />';
 }
 
 function modulo_venda_scripts() {
