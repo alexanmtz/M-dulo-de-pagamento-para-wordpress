@@ -73,135 +73,17 @@ function desinstalar_modulo_venda() {
 register_deactivation_hook(__FILE__, 'desinstalar_modulo_venda');
 register_activation_hook(__FILE__,'instalar_modulo_venda');
 
-function modulo_venda_listar_vendas() {
-	add_management_page('modulo-vendas.php', "Vendas realizadas por transferencia", 10, plugin_basename(dirname(__FILE__)).'/modulo-vendas.php');
-}
-
-function modulo_venda_pagina_opcoes() {
-	echo '<div class="wrap"><h2>Opções do Módulo Pagseguro</h2>';
-
-	$email_padrao = get_option('modulo_venda_email_padrao');
-    if (empty($email_padrao)) $email_padrao = get_bloginfo('admin_email');
-
-	$cat_padrao_id = get_option('modulo_venda_cat');
-    $modulo_cat_dropdown = 'hide_empty=0&name=modulo_venda_cat&class=code';
-	if (empty($cat_padrao_id)&&$cat_padrao_id) {
-    	$cat_padrao_id = 0;
-    } else {
-    	$modulo_cat_dropdown .= '&selected='.$cat_padrao_id;
-    }
-
-	$cat_padrao_id = get_option('modulo_venda_cat');
-    if (empty($cat_padrao_id)) $cat_padrao_id = 0;
-
-    $modulo_preco = get_option('modulo_preco');
-    if (empty($modulo_preco)) $modulo_preco = 0;
-
-    $modulo_peso = get_option('modulo_peso');
-    if (empty($modulo_peso)) $modulo_peso = 0;
-
-    $modulo_entrega_sedex = get_option('modulo_entrega_sedex');
-    if (empty($modulo_entrega_sedex)) $modulo_entrega_sedex = false;
-
-    if($modulo_entrega_sedex) $modulo_entrega_sedex_checked = 'checked="true"';
-
-    $modulo_entrega_pac = get_option('modulo_entrega_pac');
-    if (empty($modulo_entrega_pac)) $modulo_entrega_pac = false;
-
-    if($modulo_entrega_pac) $modulo_entrega_pac_checked = 'checked="true"';
-
-    $modulo_entrega_gratis = get_option('modulo_entrega_gratis');
-    if (empty($modulo_entrega_gratis)) $modulo_entrega_gratis = false;
-
-    if($modulo_entrega_gratis) $modulo_entrega_gratis_checked = 'checked="true"';
-
-    $modulo_entrega_trans = get_option('modulo_entrega_trans');
-    if (empty($modulo_entrega_trans)) $modulo_entrega_trans = false;
-
-    if($modulo_entrega_trans) $modulo_entrega_trans_checked = 'checked="true"';
-
-    echo '<p>Para acessar sua conta do pagseguro, por favor acesse ';
-    echo '<a href="http://www.pagseguro.com.br">o site do pagseguro</a></p>';
-	echo '<form method="post" action="options.php">';
-	//settings_fields('opcoes-modulo-venda'); versao 2.7
-	wp_nonce_field('update-options');
-    echo '<table class="form-table">';
-    echo '<tbody>';
-    echo '<tr valign="top">';
-    echo '<th scope="row">';
-    echo '<label for="modulo_venda_cat">Categoria</label>';
-    echo '</th>';
-    echo '<td>';
-    //exibe as categorias em um select
-    wp_dropdown_categories($modulo_cat_dropdown);
-    echo '<br/>';
-    echo 'Esta é a categoria padrão que você usará para disponibilizar de forma organizada os itens para venda';
-    echo '<br />Todos os posts nesta categoria possuiram um carrinho';
-    echo '</td>';
-    echo '</tr>';
-    echo '<tr valign="top">';
-    echo '<th scope="row">';
-    echo '<label for="modulo_preco">E-mail:</label>';
-    echo '</th>';
-    echo '<td>';
-	echo '<input type="text" class="code" size="40" name="modulo_venda_email_padrao" value="'.$email_padrao.'" />';
-    echo '<br/>';
-    echo 'E-mail cadastrado no pagseguro';
-    echo '</td>';
-    echo '</tr>';
-    echo '<tr valign="top">';
-    echo '<th scope="row">';
-    echo '<label for="modulo_preco">Preço:</label>';
-    echo '</th>';
-    echo '<td>';
-	echo '<input type="text" class="code" size="10" name="modulo_preco" value="'.$modulo_preco.'" />';
-    echo '<br/>';
-    echo 'Valor de cada mercadoria nesta categoria. <em>Ex:</em> 12.00';
-    echo '</td>';
-    echo '</tr>';
-    echo '<tr valign="top">';
-    echo '<th scope="row">';
-    echo '<label>Formas de envio:</label>';
-    echo '</th>';
-    echo '<td>';
-	echo '<input type="checkbox" name="modulo_entrega_sedex" value="true" '.$modulo_entrega_sedex_checked.'  />';
-	echo '<label for="modulo_entrega_correios">Sedex</label>';
-    echo '<br/>';
-    echo '<input type="checkbox" name="modulo_entrega_pac" value="true" '.$modulo_entrega_pac_checked.' />';
-    echo '<label for="modulo_entrega_correios">Pac</label>';
-    echo '<br/>';
-    echo '<input type="checkbox" name="modulo_entrega_gratis" value="true" '.$modulo_entrega_gratis_checked.'  />';
-    echo '<label for="modulo_entrega_correios">Gratis</label>';
-    echo '<br/>';
-    echo '<input type="checkbox" name="modulo_entrega_trans" value="true" '.$modulo_entrega_trans_checked.'  />';
-	echo '<label for="modulo_entrega_trans">Transferência Bancária</label>';
-    echo '<p>Habilitar formas de envio. Lembre-se que é necessário configurar nas preferências web e frete do pagseguro para sedex e PAC</p>';
-    echo '</td>';
-    echo '</tr>';
-    echo '<tr valign="top">';
-    echo '<th scope="row">';
-    echo '<label for="modulo_peso">Peso:</label>';
-    echo '</th>';
-    echo '<td>';
-	echo '<input type="text" class="code" size="10" name="modulo_peso" value="'.$modulo_peso.'" />';
-    echo '<br/>';
-    echo 'Peso do produto em gramas. <em>Ex:</em> 1000 para 1kg';
-    echo '</td>';
-    echo '</tr>';
-    echo '</tbody>';
-    echo '</table>';
-    echo '<input type="hidden" name="action" value="update" />'; //remover para versao 2.7
-    echo '<input type="hidden" name="page_options" value="modulo_venda_email_padrao,modulo_venda_cat,modulo_preco,modulo_entrega_sedex,modulo_entrega_pac,modulo_entrega_gratis,modulo_entrega_trans,modulo_peso" />'; //remover versao 2.7
-    echo '<p class="submit">';
-	echo '<input type="submit" class="button" value="Save Changes" name="Submit"/>';
-	echo '</p>';
-    echo '</form>';
-	echo '</div>';
-}
-
 //funcao que adiciona os itens do menu
 function modulo_venda_menu() {
-	add_options_page('Módulo de venda Pagseguro para Wordpress', 'Modulo de venda Pagseguro para Wordpress', 'manage_options', __FILE__, 'modulo_venda_pagina_opcoes');
+	
+	add_menu_page( 'Módulo de pagamento', 'Módulo de pagamento', 'administrator', plugin_basename(dirname(__FILE__)).'/modulo-vendas.php', '' , WP_PLUGIN_URL.'/'.plugin_basename(dirname(__FILE__)).'/img/calendar.png');
+	//add_submenu_page( plugin_basename(dirname(__FILE__)).'/modulo-vendas.php', 'Módulo de pagamento', 'Módulo de pagamento', 'administrator', plugin_basename(dirname(__FILE__)).'/modulo-vendas.php');
+	add_submenu_page( plugin_basename(dirname(__FILE__)).'/modulo-vendas.php', 'Envio de E-mail', 'Envio de E-mail', 'administrator', plugin_basename(dirname(__FILE__)).'/modulo_mail.php');
+	add_submenu_page( plugin_basename(dirname(__FILE__)).'/modulo-vendas.php', 'Configurações', 'Configurações', 'administrator', plugin_basename(dirname(__FILE__)).'/modulo_config.php');
+	//add_menu_page( 'Módulo de pagamento', 'Módulo de pagamento', 'administradors', plugin_basename(dirname(__FILE__)).'/modulo-vendas.php', plugin_basename(dirname(__FILE__)).'/modulo-vendas.php', WP_PLUGIN_URL.'/'.plugin_basename(dirname(__FILE__)).'/img/calendar.png' );
+	//add_menu_page('Módulo de pagamento', 'Módulo de pagamento', 'administrator', plugin_basename(dirname(__FILE__)).'/modulo-vendas.php', '', WP_PLUGIN_URL.'/'.plugin_basename(dirname(__FILE__)).'/img/calendar.png');
+	//add_submenu_page('modulo-vendas.php','Opções','Opções', 'administrador', 'submenu-modulo-venda',WP_PLUGIN_URL.'/'.plugin_basename(dirname(__FILE__)).'/modulo_mail.php');
+	//add_options_page('Módulo de venda Pagseguro para Wordpress', 'Modulo de venda Pagseguro para Wordpress', 'manage_options', __FILE__, 'modulo_venda_pagina_opcoes');
 }
 //registrando opcoes
 function modulo_venda_plugin_init(){
@@ -599,9 +481,6 @@ function modulo_venda_anotacoes() {
 	
 	die();
 }
-
-// Adicionar menu de gerenciar vendas
-add_action("admin_menu", "modulo_venda_listar_vendas");
 
 /* Ajax */
 add_action('wp_ajax_gravar_cliente', 'modulo_venda_gravar_cliente');
