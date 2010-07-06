@@ -54,6 +54,17 @@ function instalar_modulo_venda() {
 		require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
 		dbDelta($sql_venda);
    	}
+   	
+   	$template_tags = array(
+	
+		'nome' => '[nome do cliente]',
+		'status' => '[status da transacao]',
+		'valor' => '[valor]',
+		'envio' => '[modo de envio]'
+	
+	);
+	
+	update_option('modulo_pagamento_mail_template_tags', $template_tags);
 
 }
 
@@ -81,8 +92,7 @@ function modulo_venda_menu() {
 }
 //registrando opcoes
 function modulo_venda_plugin_init(){
-	//versao 2.7
-	//register_setting('opcoes-modulo-venda', 'modulo_venda_cat');
+	
 }
 function adicionar_item() {
 	$carrinho_id = $_POST['postid'];
@@ -297,7 +307,7 @@ function modulo_venda_gravar_cliente() {
 	}
 
 	if($results_produto) {
-		$results_venda = $wpdb->insert( $table_name_venda, array(
+		$dados_venda = array(
 			'data' => $data,
 			'nome' => $nome,
 			'valor' => $_POST['modulo-venda-total'],
@@ -306,10 +316,17 @@ function modulo_venda_gravar_cliente() {
 			'envio' => $envio,
 			'produto_id' => join(',',$id_list),
 			'anotacoes' => ''
-		), array( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' ) );
+		);
+		$results_venda = $wpdb->insert( $table_name_venda, $dados_venda, array( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' ) );
 	}
 
   	if($results_venda) {
+  		$headers = 'From: Conexão Paris <conexaoparis@yahoo.fr>' . "\r\n\\";
+  		$mail_template = get_option('modulo_pagamento_mail_template');
+  		$template_tags = get_option('modulo_pagamento_mail_template_tags');
+		$mail_template_context = str_replace($template_tags, array($dados_venda['nome'], $dados_venda['status'], $dados_venda['valor'], $dados_venda['envio']),$mail_template);
+		var_dump($mail_template_context);
+		wp_mail( $email, 'Envio de e-mail', $mail_template_context, $headers ); 
   		return true;
   	} else {
   		return false;
@@ -397,6 +414,7 @@ add_action("admin_post_modulo_venda_transacao", "modulo_venda_transacao");
 add_action("admin_post_modulo_pagamento_mail_template", "modulo_pagamento_mail_template");
 
 function modulo_pagamento_mail_template() {
+	
 	$template = $_POST['modulo_pagamento_mail_template'];
 	
 	$updated = update_option('modulo_pagamento_mail_template', $template);
