@@ -321,11 +321,10 @@ function modulo_venda_gravar_cliente() {
 	}
 
   	if($results_venda) {
-  		$headers = 'From: Conexão Paris <conexaoparis@yahoo.fr>' . "\r\n\\";
+  		$headers = "From: ".get_option('admin_email')."\n";
   		$mail_template = get_option('modulo_pagamento_mail_template');
   		$template_tags = get_option('modulo_pagamento_mail_template_tags');
 		$mail_template_context = str_replace($template_tags, array($dados_venda['nome'], $dados_venda['status'], $dados_venda['valor'], $dados_venda['envio']),$mail_template);
-		var_dump($mail_template_context);
 		wp_mail( $email, 'Envio de e-mail', $mail_template_context, $headers ); 
   		return true;
   	} else {
