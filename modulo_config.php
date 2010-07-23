@@ -20,6 +20,11 @@ if (empty($modulo_preco)) $modulo_preco = 0;
 $modulo_peso = get_option('modulo_peso');
 if (empty($modulo_peso)) $modulo_peso = 0;
 
+$modulo_entrega_email = get_option('modulo_entrega_email');
+if (empty($modulo_entrega_email)) $modulo_entrega_email = false;
+
+if($modulo_entrega_email) $modulo_entrega_email_checked = 'checked="true"';
+
 $modulo_entrega_sedex = get_option('modulo_entrega_sedex');
 if (empty($modulo_entrega_sedex)) $modulo_entrega_sedex = false;
 
@@ -40,19 +45,27 @@ if (empty($modulo_entrega_trans)) $modulo_entrega_trans = false;
 
 if($modulo_entrega_trans) $modulo_entrega_trans_checked = 'checked="true"';
 
+$updated = $_GET['updated'];
+if($updated) {
+	$message = 'Atualizado com sucesso';
+} else if(!empty($updated)) {
+	$message = 'Não foi possível salvar as configurações';
+} else {
+	$message = false;
+}
+
 ?>
 <div class="wrap">
-<?php if ( $message != false ) : ?>
+<?php if ( $message ) : ?>
 <div id="message" class="updated fade">
-<p><?php echo $message; ?></p>
+	<p><?php echo $message; ?></p>
 </div>
 <?php endif; ?>
 <h2>Opções do Módulo Pagseguro</h2>
 <p>Para acessar sua conta do pagseguro, por favor acesse <a
 	href="http://www.pagseguro.com.br">o site do pagseguro</a></p>
 <form method="post" action="options.php"><?php 
-//settings_fields('opcoes-modulo-venda'); versao 2.7
-wp_nonce_field('update-options');
+settings_fields('opcoes-modulo-venda'); //a partir da versao 2.7
 ?>
 <table class="form-table">
 	<tbody>
@@ -86,9 +99,12 @@ wp_nonce_field('update-options');
     </tr>
     <tr valign="top">
     <th scope="row">
-    <label>Formas de envio:</label>
+    <label>Opções:</label>
     </th>
     <td>
+    <input type="checkbox" name="modulo_entrega_email" value="true" <?php echo $modulo_entrega_email_checked; ?>  />
+	<label for="modulo_entrega_email">Envia e-mail automático para o cliente quando realizar a compra</label>
+    <br/>
 	<input type="checkbox" name="modulo_entrega_sedex" value="true" <?php echo $modulo_entrega_sedex_checked; ?>  />
 	<label for="modulo_entrega_correios">Sedex</label>
     <br/>
@@ -116,7 +132,7 @@ wp_nonce_field('update-options');
     </tbody>
     </table>
     <input type="hidden" name="action" value="update" /> 
-    <input type="hidden" name="page_options" value="modulo_venda_email_padrao,modulo_venda_cat,modulo_preco,modulo_entrega_sedex,modulo_entrega_pac,modulo_entrega_gratis,modulo_entrega_trans,modulo_peso" />
+    <!--  <input type="hidden" name="page_options" value="modulo_venda_email_padrao,modulo_venda_cat,modulo_preco,modulo_entrega_email,modulo_entrega_sedex,modulo_entrega_pac,modulo_entrega_gratis,modulo_entrega_trans,modulo_peso" /> -->
     <p class="submit">
 	<input type="submit" class="button" value="Save Changes" name="Submit"/>
 	</p>

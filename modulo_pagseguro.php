@@ -92,7 +92,15 @@ function modulo_venda_menu() {
 }
 //registrando opcoes
 function modulo_venda_plugin_init(){
-	
+	register_setting('opcoes-modulo-venda', 'modulo_venda_email_padrao');
+	register_setting('opcoes-modulo-venda', 'modulo_venda_cat');
+	register_setting('opcoes-modulo-venda', 'modulo_preco');
+	register_setting('opcoes-modulo-venda', 'modulo_entrega_email');
+	register_setting('opcoes-modulo-venda', 'modulo_entrega_sedex');
+	register_setting('opcoes-modulo-venda', 'modulo_entrega_pac');
+	register_setting('opcoes-modulo-venda', 'modulo_entrega_gratis');
+	register_setting('opcoes-modulo-venda', 'modulo_entrega_trans');
+	register_setting('opcoes-modulo-venda', 'modulo_peso');
 }
 function adicionar_item() {
 	$carrinho_id = $_POST['postid'];
@@ -321,11 +329,12 @@ function modulo_venda_gravar_cliente() {
 	}
 
   	if($results_venda) {
-  		$headers = "From: ".get_option('admin_email')."\n";
   		$mail_template = get_option('modulo_pagamento_mail_template');
   		$template_tags = get_option('modulo_pagamento_mail_template_tags');
 		$mail_template_context = str_replace($template_tags, array($dados_venda['nome'], $dados_venda['status'], $dados_venda['valor'], $dados_venda['envio']),$mail_template);
-		wp_mail( $email, 'Envio de e-mail', $mail_template_context, $headers ); 
+		if(get_option('modulo_entrega_email')) {
+			wp_mail( $email, 'Envio de e-mail', $mail_template_context );
+		} 
   		return true;
   	} else {
   		return false;

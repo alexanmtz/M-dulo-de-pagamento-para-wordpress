@@ -1,6 +1,7 @@
 <?php
 
 require "pagination.class.php";
+require "Inflector.php";
 
 global $wpdb;
 $table_name = $wpdb->prefix . "modulo_venda";
@@ -24,8 +25,6 @@ if($_GET['action']=='apagar') {
 $ordenar_por = $_GET['ordenar_por'];
 
 $filtrar_por = $_GET['filtrar_por'];
-
-$filtrar_por = str_replace("_"," ",$filtrar_por);
 
 if(!$filtrar_por || $filtrar_por == 'todos') {
 	$items = mysql_num_rows(mysql_query("SELECT * from $table_name")); // number of total rows in the database	
@@ -91,19 +90,22 @@ if($items > 0) {
 <?php endif; ?>
 <div class="wrap">
 <h2><?php _e('Gerenciar vendas'); ?></h2>
-<form action="admin-post.php" method="post"><?php wp_nonce_field('modulo_venda_transacao'); ?>
+<form action="admin-post.php" id="modulo-vendas-realizadas" method="post"><?php wp_nonce_field('modulo_venda_transacao'); ?>
 <input type="hidden" name="action" value="modulo_venda_transacao">
+<p>Itens encontrados: <?php echo $items;?></p>
 <div class="tablenav">
 <div class="tablenav-pages">
 <?php 
 	echo $p->show();  // Echo out the list of paging.
 ?>
 </div>
-<div class="alignleft"><input type="submit" value="Apagar"
+<fieldset class="alignleft" id="modulo-pagamento-acoes">
+	<legend>Ações e filtros</legend>
+	<input type="submit" value="Apagar"
 	name="modulo_venda_transacao" class="button-secondary delete" />
 	<select name="modulo-venda-status" id="status" class= "postform">
 		<option value="todos">Todos</option>
-		<option value='pendente'>Pendente</option>
+		<option value="pendente">Pendente</option>
 		<option value="aguardando_pagamento">Aguardando Pagamento</option>
 		<option value="enviando">Enviando</option>
 		<option value="finalizado">Finalizado</option>
@@ -111,8 +113,9 @@ if($items > 0) {
 	<input type="submit" id="post-query-status" value="Modificar Status" name="modulo_venda_transacao"
 	class="button-secondary" /><input type="submit" id="post-query-filtrar"
 	value="Filtrar" name="modulo_venda_transacao"
-	class="button-secondary" /></div>
-<div class="alignleft">
+	class="button-secondary" /></fieldset>
+<fieldset class="alignleft">
+	<legend>Ordenação</legend>
 	<label for="modulo-venda-filtrar">Ordenar</label>
 	<select name="modulo-venda-ordenar" id="ordem" class="postform">
 	<?php foreach($colunas as $coluna) :?>
@@ -122,7 +125,8 @@ if($items > 0) {
 	<?php endforeach; ?>
 </select> <input type="submit" id="post-query-submit"
 	value="Ordenar" name="modulo_venda_transacao"
-	class="button-secondary" /></div>
+	class="button-secondary" />
+</fieldset>
 </div>
 <br class="clear">
 <table class="widefat">
@@ -176,7 +180,8 @@ if($items > 0) {
 			<td class="<?php if ($count == 1){echo 'alternate';} ?>" valign="top">
 			<?php echo $venda->email; ?></td>
 			<td class="<?php if ($count == 1){echo 'alternate';} ?>" valign="top">
-			<?php echo $venda->status; ?></td>
+			<?php $status = new Inflector(); ?>
+			<?php echo $status->titleize($venda->status); ?></td>
 			<td class="<?php if ($count == 1){echo 'alternate';} ?> anotacoes" valign="top">
 				<?php if($venda->anotacoes) : ?>
 					<a href="#" class="manage"><?php echo $venda->anotacoes; ?></a>

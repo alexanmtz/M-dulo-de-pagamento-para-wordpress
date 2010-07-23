@@ -222,3 +222,19 @@ table#modulo-finalizar thead th, table#modulo-finalizar tfooter tr {
 #modulo-formas input {
 	margin: 5px;
 }
+
+/*  
+ * Opcoes da listagem
+ */
+
+#modulo-vendas-realizadas .tablenav {
+	margin-bottom: 30px;
+}
+
+#modulo-vendas-realizadas .tablenav .alignleft {
+	border: 1px solid gray;
+	-moz-border-radius: 4px;
+	margin-right: 10px;
+	padding: 5px;
+	background-color: #EFEFEF;
+}
