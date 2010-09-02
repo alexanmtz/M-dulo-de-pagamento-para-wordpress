@@ -7,7 +7,7 @@ Version: v1.0
 Plugin URI: http://www.conexaoparis.com.br
 Author: Alexandre Magno
 Author URI: http://blog.alexandremagno.net
-Description: Plugin de integração do Wordpress com o pagseguro de uma forma amigável, desenvolvido para o blog Conexão Paris
+Description: Plugin de pagamento para Wordpress que suporta pagseguro e transferência bancária integradan o próprio blog, desenvolvido para o blog Conexão Paris
 */
 session_start();
 
@@ -320,7 +320,7 @@ function modulo_venda_gravar_cliente() {
 			'nome' => $nome,
 			'valor' => $_POST['modulo-venda-total'],
 			'email' => $email,
-			'status' => 'pendente',
+			'status' => 'aguardando_pagamento',
 			'envio' => $envio,
 			'produto_id' => join(',',$id_list),
 			'anotacoes' => ''
