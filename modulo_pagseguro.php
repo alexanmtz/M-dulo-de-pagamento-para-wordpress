@@ -105,11 +105,12 @@ function modulo_venda_plugin_init(){
 }
 function adicionar_item() {
 	$carrinho_id = $_POST['postid'];
+	$preco = $_POST['postprice'];
 	if(!is_array($_SESSION['carrinho'])) $_SESSION['carrinho'] = array();
 	if(!array_key_exists($carrinho_id,$_SESSION['carrinho'])) {
 		$_SESSION['carrinho'][$carrinho_id]['posttitle'] = $_POST['posttitle'];
 		$_SESSION['carrinho'][$carrinho_id]['quantidade'] = $_POST['quantidade'];
-		$_SESSION['carrinho'][$carrinho_id]['valor'] = get_option('modulo_preco');
+		$_SESSION['carrinho'][$carrinho_id]['valor'] = $preco;
 	} else {
 		$_SESSION['carrinho'][$carrinho_id]['quantidade'] += $_POST['quantidade'];
 	}
@@ -120,8 +121,10 @@ function apagar_item() {
 }
 function mod_get_total() {
 	$qtidade_total = 0;
+	$valor_total = 0;
 	foreach($_SESSION['carrinho'] as $key => $item) {
 		$qtidade_total += $item['quantidade'];
+		$valor_total += $item['valor'];
 	}
 	$valor_total = $qtidade_total * get_option('modulo_preco');
 	return sprintf('%1.2f',$valor_total);
@@ -242,10 +245,12 @@ function modulo_venda_carrinho_widget($args) {
 function modulo_post_compravel($content) {
 	global $id;
 	$post_cat_id = get_the_category($id);
-	if($post_cat_id[0]->term_id==get_option('modulo_venda_cat')){
-		$content.= '<p><b>Valor: R$ '.get_option('modulo_preco').'</b>';
+	$prices = get_option('modulo_subpreco');
+	if($prices[$post_cat_id[0]->term_id]){
+		$content.= '<p><b>Valor: R$ '.$prices[$post_cat_id[0]->term_id].'</b>';
 		$content.= '<div class="modulo-venda-post">';
 		$content.= '<form action="'.$_SERVER['PHP_SELF'].'" method="post" id="modulo-venda-post-form">';
+		$content.= '<input type="hidden" name="postprice" value="'.$prices[$post_cat_id[0]->term_id].'" />';
 		$content.= '<input type="hidden" name="postid" value="'.$id.'" />';
 		$content.= '<input type="hidden" name="posttitle" value="'.get_the_title($id).'" />';
 		$content.= '<label id="label-quantidade" for="quantidade">Quantidade: </label><input class="quantidade" type="text" name="quantidade" value="1" />';
