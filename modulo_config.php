@@ -100,7 +100,7 @@ settings_fields('opcoes-modulo-venda'); //a partir da versao 2.7
 			Valor de cada mercadoria nesta categoria. <em>Ex:</em> 12.00</td>
 		</tr>
 		<tr valign="top">
-			<th scope="row"><label for="modulo_preco">E-mail:</label></th>
+			<th scope="row"><label for="modulo_vena_email_padrao">E-mail:</label></th>
 			<td><input type="text" class="code" size="40"
 				name="modulo_venda_email_padrao"
 				value="<?php echo $email_padrao; ?>" /> <br />
