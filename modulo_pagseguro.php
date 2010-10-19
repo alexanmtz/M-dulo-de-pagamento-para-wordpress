@@ -95,6 +95,7 @@ function modulo_venda_plugin_init(){
 	register_setting('opcoes-modulo-venda', 'modulo_venda_email_padrao');
 	register_setting('opcoes-modulo-venda', 'modulo_venda_cat');
 	register_setting('opcoes-modulo-venda', 'modulo_preco');
+	register_setting('opcoes-modulo-venda', 'modulo_subpreco');
 	register_setting('opcoes-modulo-venda', 'modulo_entrega_email');
 	register_setting('opcoes-modulo-venda', 'modulo_entrega_sedex');
 	register_setting('opcoes-modulo-venda', 'modulo_entrega_pac');
