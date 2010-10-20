@@ -1,5 +1,6 @@
 # Módulo de pagamento para Wordpress
-> Versão 1.0
+> Versão 1.5
+	* Possibilidade de colocar diferentes preços nas categorias filhas da categoria escolhia para vendas
 
 # Sobre o Plugin ?
 
@@ -28,9 +29,6 @@ andamento do processo.
 * Integração completa com o pagseguro
 * Opção de compra simples por trasnferência bancária no próprio blog
 * Página de configurações para escolher quais formam de pagamento serão usadas, preço do produto e peso
-
-# Próximas versões
-
 * Envio de e-mails com os processos da venda para o cliente
 * Identificador da transação
 * Filtrar por status
