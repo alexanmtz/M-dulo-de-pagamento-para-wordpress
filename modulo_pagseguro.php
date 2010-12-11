@@ -255,7 +255,7 @@ function modulo_post_compravel($content) {
 	if($prices[$post_cat_id[0]->term_id]){
 		$content.= '<p><b>Valor: R$ '.$prices[$post_cat_id[0]->term_id].'</b>';
 		$content.= '<div class="modulo-venda-post">';
-		$content.= '<form action="'.$_SERVER['PHP_SELF'].'" method="post" id="modulo-venda-post-form">';
+		$content.= '<form action="'.$_SERVER['REQUEST_URI'].'" method="post" id="modulo-venda-post-form">';
 		$content.= '<input type="hidden" name="postprice" value="'.$prices[$post_cat_id[0]->term_id].'" />';
 		$content.= '<input type="hidden" name="postid" value="'.$id.'" />';
 		$content.= '<input type="hidden" name="posttitle" value="'.get_the_title($id).'" />';
